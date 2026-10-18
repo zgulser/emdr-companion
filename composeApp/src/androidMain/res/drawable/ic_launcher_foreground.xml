@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!--
+      Adaptive safe zone is the inner 72dp (18–90). Previous art used
+      fill r=24 / stroke r=20 at x=38/70, so the discs sat outside the
+      rings and the launcher mask cropped them into oversized blobs.
+    -->
+    <path
+        android:fillColor="#7CA982"
+        android:fillAlpha="0.18"
+        android:pathData="M45,54m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0" />
+    <path
+        android:fillColor="#7CA982"
+        android:fillAlpha="0.18"
+        android:pathData="M63,54m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#7CA982"
+        android:strokeWidth="2.6"
+        android:pathData="M45,54m-15,0a15,15 0,1 1,30 0a15,15 0,1 1,-30 0" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#7CA982"
+        android:strokeWidth="2.6"
+        android:pathData="M63,54m-15,0a15,15 0,1 1,30 0a15,15 0,1 1,-30 0" />
+</vector>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EMDR Companion</string>
+    <string name="setup_tagline">Prepare a bilateral set. Choices stay on this device.</string>
+    <string name="start_session">START SESSION</string>
+
+    <string name="appearance_title">Appearance</string>
+    <string name="appearance_caption">System follows the device. Light uses linen; Dark uses charcoal.</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+
+    <string name="mode_title">Mode</string>
+    <string name="mode_caption">Visual motion, stereo audio, or both locked together.</string>
+    <string name="mode_visual">Visual</string>
+    <string name="mode_audio">Audio</string>
+    <string name="mode_both">Both</string>
+
+    <string name="visual_title">Visual customization</string>
+    <string name="visual_caption">Orb color, travel pattern, and size.</string>
+    <string name="visual_caption_disabled">Used when mode includes visual.</string>
+    <string name="orb_color">Orb color</string>
+    <string name="pattern">Pattern</string>
+    <string name="size">Size</string>
+    <string name="pattern_horizontal">Horizontal</string>
+    <string name="pattern_infinity">Infinity</string>
+    <string name="pattern_diagonal">Diagonal</string>
+    <string name="pattern_vertical">Vertical</string>
+    <string name="size_s">S</string>
+    <string name="size_m">M</string>
+    <string name="size_l">L</string>
+    <string name="color_sage">Sage</string>
+    <string name="color_soft_white">Soft White</string>
+    <string name="color_amber">Amber</string>
+    <string name="color_teal">Teal</string>
+    <string name="color_lavender">Lavender</string>
+    <string name="color_coral">Coral</string>
+
+    <string name="audio_title">Auditory stimulation</string>
+    <string name="audio_caption">A discrete tick fires at each reversal: left channel on the left edge, right channel on the right. Soft Sine Tones is the default.</string>
+    <string name="audio_caption_disabled">Used when mode includes audio.</string>
+    <string name="sound_soft_sine_default">Soft Sine Tones (Default)</string>
+    <string name="sound_wooden">Wooden Metronome</string>
+
+    <string name="haptics_title">Haptic Vibrations</string>
+    <string name="haptics_caption">A light pulse at each wall. Turn off if you prefer a still device.</string>
+    <string name="state_on">ON</string>
+    <string name="state_off">OFF</string>
+
+    <string name="tempo_title">Tempo</string>
+    <string name="tempo_caption">Beats per minute. Each edge arrival is one beat.</string>
+    <string name="bpm_value">%1$d BPM</string>
+    <string name="bpm_range">%1$d–%2$d</string>
+
+    <string name="session_type_title">Session type</string>
+    <string name="session_type_caption">Continuous runs on a timer. Sets count left–right passes, then rest.</string>
+    <string name="type_continuous">Continuous</string>
+    <string name="type_sets">Sets</string>
+
+    <string name="set_length_title">Set length</string>
+    <string name="set_length_caption">Each reversal is one pass. After the last pass the field rests for a breath.</string>
+    <string name="set_length_passes">%1$d passes</string>
+
+    <string name="duration_title">Duration</string>
+    <string name="duration_caption">Set length. Open runs until you end the session.</string>
+    <string name="duration_30s">30s</string>
+    <string name="duration_1m">1 min</string>
+    <string name="duration_2m">2 min</string>
+    <string name="duration_5m">5 min</string>
+    <string name="duration_open">Open</string>
+
+    <string name="background_title">Allow Screen-Off Playback</string>
+    <string name="background_caption">Keep bilateral audio and haptics running when screen is locked.</string>
+
+    <string name="supporter_title">Support EMDR Companion</string>
+    <string name="supporter_subtitle">Voluntary tips help us keep EMDR Companion offline and updated.</string>
+    <string name="supporter_privacy">🔒 Processed anonymously via your App Store / Google Play account. Zero personal data is shared with us.</string>
+    <string name="supporter_thanks">Thank you for supporting this project! 🌿</string>
+    <string name="store_unavailable">The store isn’t available on this install yet.</string>
+    <string name="store_failed">Couldn’t complete that tip.</string>
+
+    <string name="grounding_banner">Take a deep breath. Focus gently on your target memory or sensation, then tap to begin.</string>
+    <string name="phase_ready">Ready</string>
+    <string name="phase_paused">Paused</string>
+    <string name="phase_complete">Set complete</string>
+    <string name="phase_breathe_rest">Breathe &amp; Rest</string>
+    <string name="phase_rest_complete">Rest complete</string>
+    <string name="soft_pulse">Soft pulse</string>
+    <string name="let_set_settle">Let the set settle</string>
+    <string name="set_number">Set %1$d</string>
+    <string name="passes_progress">%1$d / %2$d</string>
+    <string name="audio_only">Audio</string>
+    <string name="listen">Listen</string>
+    <string name="between_sets_copy">When you are ready, begin the next set or rest here.</string>
+    <string name="next_set">Next set</string>
+    <string name="done">Done</string>
+    <string name="session_complete_copy">Eyes can rest. Return when you are ready.</string>
+    <string name="preferences">Preferences</string>
+    <string name="close_preferences">Close preferences</string>
+    <string name="return_to_ready">Return to ready</string>
+    <string name="begin_set">Begin set</string>
+    <string name="resume">Resume</string>
+    <string name="pause">Pause</string>
+    <string name="slower">Slower</string>
+    <string name="faster">Faster</string>
+    <string name="breathe_prompt">Breathe in... Breathe out...</string>
+    <string name="breathe_in">Breathe in...</string>
+    <string name="breathe_out">Breathe out...</string>
+
+    <string name="milestone_5_title">A quiet thank you</string>
+    <string name="milestone_5_copy">You’ve opened the companion a few times. If a session felt useful, a small tip keeps it offline.</string>
+    <string name="milestone_20_title">Still here with you</string>
+    <string name="milestone_20_copy">Twenty visits. Thank you for making this a regular, private practice.</string>
+    <string name="milestone_50_title">A long stretch of care</string>
+    <string name="milestone_50_copy">Fifty launches. Your support helps this stay simple and on-device.</string>
+    <string name="not_now">Not Now</string>
+</resources>

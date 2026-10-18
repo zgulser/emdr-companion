@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EMDR Companion</string>
+    <string name="setup_tagline">Bereite ein bilaterales Set vor. Die Auswahl bleibt auf diesem Gerät.</string>
+    <string name="start_session">SITZUNG STARTEN</string>
+
+    <string name="appearance_title">Erscheinungsbild</string>
+    <string name="appearance_caption">System folgt dem Gerät. Hell nutzt Leinen; Dunkel nutzt Holzkohle.</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Hell</string>
+    <string name="theme_dark">Dunkel</string>
+
+    <string name="mode_title">Modus</string>
+    <string name="mode_caption">Visuelle Bewegung, Stereo-Audio oder beides gekoppelt.</string>
+    <string name="mode_visual">Visuell</string>
+    <string name="mode_audio">Audio</string>
+    <string name="mode_both">Beides</string>
+
+    <string name="visual_title">Visuelle Anpassung</string>
+    <string name="visual_caption">Orb-Farbe, Bahn und Größe.</string>
+    <string name="visual_caption_disabled">Wird genutzt, wenn der Modus visuell einschließt.</string>
+    <string name="orb_color">Orb-Farbe</string>
+    <string name="pattern">Muster</string>
+    <string name="size">Größe</string>
+    <string name="pattern_horizontal">Horizontal</string>
+    <string name="pattern_infinity">Unendlich</string>
+    <string name="pattern_diagonal">Diagonal</string>
+    <string name="pattern_vertical">Vertikal</string>
+    <string name="size_s">S</string>
+    <string name="size_m">M</string>
+    <string name="size_l">L</string>
+    <string name="color_sage">Salbei</string>
+    <string name="color_soft_white">Weiches Weiß</string>
+    <string name="color_amber">Bernstein</string>
+    <string name="color_teal">Petrol</string>
+    <string name="color_lavender">Lavendel</string>
+    <string name="color_coral">Koralle</string>
+
+    <string name="audio_title">Auditive Stimulation</string>
+    <string name="audio_caption">Ein diskreter Tick an jeder Umkehr: linker Kanal am linken Rand, rechter am rechten. Sanfte Sinustöne sind Standard.</string>
+    <string name="audio_caption_disabled">Wird genutzt, wenn der Modus Audio einschließt.</string>
+    <string name="sound_soft_sine_default">Sanfte Sinustöne (Standard)</string>
+    <string name="sound_wooden">Holzmetronom</string>
+
+    <string name="haptics_title">Haptische Vibration</string>
+    <string name="haptics_caption">Ein leichter Impuls an jeder Wand. Ausschalten, wenn das Gerät still bleiben soll.</string>
+    <string name="state_on">EIN</string>
+    <string name="state_off">AUS</string>
+
+    <string name="tempo_title">Tempo</string>
+    <string name="tempo_caption">Schläge pro Minute. Jede Kante ist ein Schlag.</string>
+    <string name="bpm_value">%1$d BPM</string>
+    <string name="bpm_range">%1$d–%2$d</string>
+
+    <string name="session_type_title">Sitzungstyp</string>
+    <string name="session_type_caption">Dauerhaft läuft mit Timer. Sets zählen Links–Rechts-Pässe, dann Pause.</string>
+    <string name="type_continuous">Dauerhaft</string>
+    <string name="type_sets">Sets</string>
+
+    <string name="set_length_title">Setlänge</string>
+    <string name="set_length_caption">Jede Umkehr ist ein Pass. Nach dem letzten ruht das Feld für einen Atemzug.</string>
+    <string name="set_length_passes">%1$d Pässe</string>
+
+    <string name="duration_title">Dauer</string>
+    <string name="duration_caption">Setlänge. Offen läuft, bis du die Sitzung beendest.</string>
+    <string name="duration_30s">30 s</string>
+    <string name="duration_1m">1 Min</string>
+    <string name="duration_2m">2 Min</string>
+    <string name="duration_5m">5 Min</string>
+    <string name="duration_open">Offen</string>
+
+    <string name="background_title">Wiedergabe bei ausgeschaltetem Bildschirm</string>
+    <string name="background_caption">Bilaterales Audio und Haptik bei gesperrtem Bildschirm fortsetzen.</string>
+
+    <string name="supporter_title">EMDR Companion unterstützen</string>
+    <string name="supporter_subtitle">Freiwillige Trinkgelder helfen uns, EMDR Companion offline und aktuell zu halten.</string>
+    <string name="supporter_privacy">🔒 Anonym über dein App-Store- / Google-Play-Konto. Es werden keine personenbezogenen Daten an uns übermittelt.</string>
+    <string name="supporter_thanks">Danke, dass du dieses Projekt unterstützt! 🌿</string>
+    <string name="store_unavailable">Der Store ist in dieser Installation noch nicht verfügbar.</string>
+    <string name="store_failed">Dieses Trinkgeld konnte nicht abgeschlossen werden.</string>
+
+    <string name="grounding_banner">Atme tief. Richte den Blick sanft auf deine Zielerinnerung oder Empfindung und tippe zum Start.</string>
+    <string name="phase_ready">Bereit</string>
+    <string name="phase_paused">Pausiert</string>
+    <string name="phase_complete">Set beendet</string>
+    <string name="phase_breathe_rest">Atmen &amp; Ruhen</string>
+    <string name="phase_rest_complete">Ruhe beendet</string>
+    <string name="soft_pulse">Sanfter Puls</string>
+    <string name="let_set_settle">Das Set ausklingen lassen</string>
+    <string name="set_number">Set %1$d</string>
+    <string name="passes_progress">%1$d / %2$d</string>
+    <string name="audio_only">Audio</string>
+    <string name="listen">Zuhören</string>
+    <string name="between_sets_copy">Wenn du bereit bist, starte das nächste Set oder bleibe hier in der Ruhe.</string>
+    <string name="next_set">Nächstes Set</string>
+    <string name="done">Fertig</string>
+    <string name="session_complete_copy">Die Augen dürfen ruhen. Komm zurück, wenn du soweit bist.</string>
+    <string name="preferences">Einstellungen</string>
+    <string name="close_preferences">Einstellungen schließen</string>
+    <string name="return_to_ready">Zurück zu Bereit</string>
+    <string name="begin_set">Set starten</string>
+    <string name="resume">Fortsetzen</string>
+    <string name="pause">Pause</string>
+    <string name="slower">Langsamer</string>
+    <string name="faster">Schneller</string>
+    <string name="breathe_prompt">Einatmen... Ausatmen...</string>
+    <string name="breathe_in">Einatmen...</string>
+    <string name="breathe_out">Ausatmen...</string>
+
+    <string name="milestone_5_title">Ein leises Danke</string>
+    <string name="milestone_5_copy">Du hast den Companion ein paar Mal geöffnet. Wenn eine Sitzung geholfen hat, hält ein kleines Trinkgeld ihn offline.</string>
+    <string name="milestone_20_title">Immer noch bei dir</string>
+    <string name="milestone_20_copy">Zwanzig Besuche. Danke, dass dies eine regelmäßige, private Praxis ist.</string>
+    <string name="milestone_50_title">Eine lange Strecke Fürsorge</string>
+    <string name="milestone_50_copy">Fünfzig Starts. Deine Unterstützung hält dies schlicht und auf dem Gerät.</string>
+    <string name="not_now">Nicht jetzt</string>
+</resources>

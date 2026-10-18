@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EMDR Companion</string>
+    <string name="setup_tagline">Prepare um set bilateral. As escolhas ficam neste dispositivo.</string>
+    <string name="start_session">INICIAR SESSÃO</string>
+
+    <string name="appearance_title">Aparência</string>
+    <string name="appearance_caption">Sistema segue o dispositivo. Claro usa linho; Escuro usa carvão.</string>
+    <string name="theme_system">Sistema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Escuro</string>
+
+    <string name="mode_title">Modo</string>
+    <string name="mode_caption">Movimento visual, áudio estéreo, ou ambos juntos.</string>
+    <string name="mode_visual">Visual</string>
+    <string name="mode_audio">Áudio</string>
+    <string name="mode_both">Ambos</string>
+
+    <string name="visual_title">Personalização visual</string>
+    <string name="visual_caption">Cor do orbe, padrão de percurso e tamanho.</string>
+    <string name="visual_caption_disabled">Usado quando o modo inclui o visual.</string>
+    <string name="orb_color">Cor do orbe</string>
+    <string name="pattern">Padrão</string>
+    <string name="size">Tamanho</string>
+    <string name="pattern_horizontal">Horizontal</string>
+    <string name="pattern_infinity">Infinito</string>
+    <string name="pattern_diagonal">Diagonal</string>
+    <string name="pattern_vertical">Vertical</string>
+    <string name="size_s">S</string>
+    <string name="size_m">M</string>
+    <string name="size_l">L</string>
+    <string name="color_sage">Sálvia</string>
+    <string name="color_soft_white">Branco suave</string>
+    <string name="color_amber">Âmbar</string>
+    <string name="color_teal">Azul-petróleo</string>
+    <string name="color_lavender">Lavanda</string>
+    <string name="color_coral">Coral</string>
+
+    <string name="audio_title">Estimulação auditiva</string>
+    <string name="audio_caption">Um tic discreto soa em cada inversão: canal esquerdo na borda esquerda, direito na direita. Tons senoidais suaves é o padrão.</string>
+    <string name="audio_caption_disabled">Usado quando o modo inclui áudio.</string>
+    <string name="sound_soft_sine_default">Tons senoidais suaves (padrão)</string>
+    <string name="sound_wooden">Metrônomo de madeira</string>
+
+    <string name="haptics_title">Vibração háptica</string>
+    <string name="haptics_caption">Um pulso leve em cada parede. Desligue se preferir o aparelho quieto.</string>
+    <string name="state_on">LIG.</string>
+    <string name="state_off">DESL.</string>
+
+    <string name="tempo_title">Andamento</string>
+    <string name="tempo_caption">Batidas por minuto. Cada chegada à borda é uma batida.</string>
+    <string name="bpm_value">%1$d BPM</string>
+    <string name="bpm_range">%1$d–%2$d</string>
+
+    <string name="session_type_title">Tipo de sessão</string>
+    <string name="session_type_caption">Contínuo usa um temporizador. Sets contam passagens esquerda–direita e depois descansam.</string>
+    <string name="type_continuous">Contínuo</string>
+    <string name="type_sets">Sets</string>
+
+    <string name="set_length_title">Duração do set</string>
+    <string name="set_length_caption">Cada inversão é uma passagem. Após a última, o campo descansa por um ciclo de respiração.</string>
+    <string name="set_length_passes">%1$d passagens</string>
+
+    <string name="duration_title">Duração</string>
+    <string name="duration_caption">Duração do set. Aberto segue até você encerrar a sessão.</string>
+    <string name="duration_30s">30 s</string>
+    <string name="duration_1m">1 min</string>
+    <string name="duration_2m">2 min</string>
+    <string name="duration_5m">5 min</string>
+    <string name="duration_open">Aberto</string>
+
+    <string name="background_title">Reprodução com tela desligada</string>
+    <string name="background_caption">Manter áudio e hápticos bilaterais com a tela bloqueada.</string>
+
+    <string name="supporter_title">Apoie o EMDR Companion</string>
+    <string name="supporter_subtitle">Gorjetas voluntárias nos ajudam a manter o EMDR Companion offline e atualizado.</string>
+    <string name="supporter_privacy">🔒 Processado de forma anônima pela sua conta da App Store / Google Play. Nenhum dado pessoal é compartilhado conosco.</string>
+    <string name="supporter_thanks">Obrigado por apoiar este projeto! 🌿</string>
+    <string name="store_unavailable">A loja ainda não está disponível nesta instalação.</string>
+    <string name="store_failed">Não foi possível concluir essa gorjeta.</string>
+
+    <string name="grounding_banner">Respire fundo. Foque com suavidade na sua memória ou sensação e toque para começar.</string>
+    <string name="phase_ready">Pronto</string>
+    <string name="phase_paused">Pausado</string>
+    <string name="phase_complete">Set concluído</string>
+    <string name="phase_breathe_rest">Respire e descanse</string>
+    <string name="phase_rest_complete">Descanso concluído</string>
+    <string name="soft_pulse">Pulso suave</string>
+    <string name="let_set_settle">Deixe o set assentar</string>
+    <string name="set_number">Set %1$d</string>
+    <string name="passes_progress">%1$d / %2$d</string>
+    <string name="audio_only">Áudio</string>
+    <string name="listen">Ouça</string>
+    <string name="between_sets_copy">Quando estiver pronto, inicie o próximo set ou descanse aqui.</string>
+    <string name="next_set">Próximo set</string>
+    <string name="done">Concluir</string>
+    <string name="session_complete_copy">Os olhos podem descansar. Volte quando quiser.</string>
+    <string name="preferences">Preferências</string>
+    <string name="close_preferences">Fechar preferências</string>
+    <string name="return_to_ready">Voltar ao pronto</string>
+    <string name="begin_set">Iniciar set</string>
+    <string name="resume">Retomar</string>
+    <string name="pause">Pausar</string>
+    <string name="slower">Mais lento</string>
+    <string name="faster">Mais rápido</string>
+    <string name="breathe_prompt">Inspire... Expire...</string>
+    <string name="breathe_in">Inspire...</string>
+    <string name="breathe_out">Expire...</string>
+
+    <string name="milestone_5_title">Um obrigado discreto</string>
+    <string name="milestone_5_copy">Você abriu o companion algumas vezes. Se uma sessão ajudou, uma gorjeta pequena o mantém offline.</string>
+    <string name="milestone_20_title">Ainda aqui com você</string>
+    <string name="milestone_20_copy">Vinte visitas. Obrigado por tornar isto uma prática regular e privada.</string>
+    <string name="milestone_50_title">Um longo trecho de cuidado</string>
+    <string name="milestone_50_copy">Cinquenta aberturas. Seu apoio ajuda a manter isto simples e no aparelho.</string>
+    <string name="not_now">Agora não</string>
+</resources>

@@ -1,0 +1,34 @@
+# EMDR Companion — KMP / Compose Multiplatform
+
+You are working on a Kotlin Multiplatform app. Prefer `commonMain` for all product logic.
+
+## Architecture
+- UI: Compose Multiplatform (Material 3) in `composeApp/src/commonMain`.
+- Persistence: russhwolf Multiplatform Settings only. User choices save instantly on-device. No network calls for session setup or playback.
+- State: repository (`SessionSettingsRepository`) is the single source of truth. Screens observe `StateFlow` via ViewModels.
+- Motion/audio math stays in pure Kotlin (`session/`, `audio/AudioSynthesis.kt`) so it can be unit-tested.
+- Platform `expect`/`actual` is reserved for audio sinks and entry points.
+
+## Design
+- Tokens live in `DESIGN_SYSTEM.md` and are implemented in `theme/{Color,Type,Shape,Theme}.kt`.
+- Dark: background `#121417`, text `#E6E8EC`. Light: linen `#F4F3EF`, text `#2C3036`. Primary sage `#7CA982` in both.
+- Appearance follows `ThemePreference` (System / Light / Dark), persisted locally. Resolve System with `isSystemInDarkTheme()`.
+- Every interactive control has a minimum 48dp touch target (`EmdrTouchTarget`, `LocalMinimumInteractiveComponentSize`).
+- Session UI stays calm and uncluttered. Do not add gamification, social, or analytics chrome.
+
+## Launch
+- First launch (`hasCompletedFirstLaunch == false`) opens `MainSetupScreen`.
+- After the first START SESSION, later cold starts open `ActiveSessionScreen` in Ready / Soft Pulse (no bilateral travel, no audio) until the user plays.
+- The session toolbar keeps a persistent 48dp settings gear that opens the preferences sheet.
+
+## Clinical / product constraints
+- Bilateral motion uses sine-wave interpolation (accel/decel at the edges). Never snap linearly across the field.
+- Audio pan is `-1.0..+1.0` and is derived from the orb's normalized horizontal position.
+- Session chrome auto-hides after 3s idle and fades over 1500ms. A tap restores it.
+- Pause/play fades chrome over 1500ms immediately. That fade is separate from the tap fade.
+- BPM range is 15–90. Duration presets persist locally.
+
+## Code style
+- Package: `com.zeki.emdr`.
+- Do not introduce new Gradle plugins or cloud SDKs without an explicit request.
+- Keep screens stateless where possible; mutate settings only through the repository.

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EMDR Companion</string>
+    <string name="setup_tagline">İki taraflı bir set hazırla. Seçimler bu cihazda kalır.</string>
+    <string name="start_session">OTURUMU BAŞLAT</string>
+
+    <string name="appearance_title">Görünüm</string>
+    <string name="appearance_caption">Sistem cihazı izler. Açık keten, Koyu kömür kullanır.</string>
+    <string name="theme_system">Sistem</string>
+    <string name="theme_light">Açık</string>
+    <string name="theme_dark">Koyu</string>
+
+    <string name="mode_title">Mod</string>
+    <string name="mode_caption">Görsel hareket, stereo ses veya ikisi birlikte.</string>
+    <string name="mode_visual">Görsel</string>
+    <string name="mode_audio">Ses</string>
+    <string name="mode_both">İkisi</string>
+
+    <string name="visual_title">Görsel özelleştirme</string>
+    <string name="visual_caption">Küre rengi, yol deseni ve boyut.</string>
+    <string name="visual_caption_disabled">Mod görsel içerdiğinde kullanılır.</string>
+    <string name="orb_color">Küre rengi</string>
+    <string name="pattern">Desen</string>
+    <string name="size">Boyut</string>
+    <string name="pattern_horizontal">Yatay</string>
+    <string name="pattern_infinity">Sonsuzluk</string>
+    <string name="pattern_diagonal">Çapraz</string>
+    <string name="pattern_vertical">Dikey</string>
+    <string name="size_s">S</string>
+    <string name="size_m">M</string>
+    <string name="size_l">L</string>
+    <string name="color_sage">Adaçayı</string>
+    <string name="color_soft_white">Yumuşak beyaz</string>
+    <string name="color_amber">Kehribar</string>
+    <string name="color_teal">Camgöbeği</string>
+    <string name="color_lavender">Lavanta</string>
+    <string name="color_coral">Mercan</string>
+
+    <string name="audio_title">İşitsel uyarım</string>
+    <string name="audio_caption">Her dönüşte tek bir tık: sol kenarda sol kanal, sağda sağ. Varsayılan yumuşak sinüs tonlarıdır.</string>
+    <string name="audio_caption_disabled">Mod ses içerdiğinde kullanılır.</string>
+    <string name="sound_soft_sine_default">Yumuşak sinüs tonları (Varsayılan)</string>
+    <string name="sound_wooden">Ahşap metronom</string>
+
+    <string name="haptics_title">Dokunsal titreşim</string>
+    <string name="haptics_caption">Her duvarda hafif bir vuruş. Cihazın durmasını tercih ediyorsan kapat.</string>
+    <string name="state_on">AÇIK</string>
+    <string name="state_off">KAPALI</string>
+
+    <string name="tempo_title">Tempo</string>
+    <string name="tempo_caption">Dakikadaki vuruş. Her kenara varış bir vuruştur.</string>
+    <string name="bpm_value">%1$d BPM</string>
+    <string name="bpm_range">%1$d–%2$d</string>
+
+    <string name="session_type_title">Oturum türü</string>
+    <string name="session_type_caption">Sürekli bir zamanlayıcıyla akar. Setler sol–sağ geçişleri sayar, sonra dinlenir.</string>
+    <string name="type_continuous">Sürekli</string>
+    <string name="type_sets">Setler</string>
+
+    <string name="set_length_title">Set uzunluğu</string>
+    <string name="set_length_caption">Her dönüş bir geçiştir. Son geçişten sonra alan bir nefes dinlenir.</string>
+    <string name="set_length_passes">%1$d geçiş</string>
+
+    <string name="duration_title">Süre</string>
+    <string name="duration_caption">Set süresi. Açık, oturumu bitirene kadar sürer.</string>
+    <string name="duration_30s">30 sn</string>
+    <string name="duration_1m">1 dk</string>
+    <string name="duration_2m">2 dk</string>
+    <string name="duration_5m">5 dk</string>
+    <string name="duration_open">Açık</string>
+
+    <string name="background_title">Ekran kapalıyken oynatma</string>
+    <string name="background_caption">Ekran kilitliyken iki taraflı ses ve titreşimi sürdür.</string>
+
+    <string name="supporter_title">EMDR Companion’ı destekle</string>
+    <string name="supporter_subtitle">Gönüllü bahşişler EMDR Companion’ı çevrimdışı ve güncel tutmamıza yardım eder.</string>
+    <string name="supporter_privacy">🔒 App Store / Google Play hesabın üzerinden anonim işlenir. Bizimle hiçbir kişisel veri paylaşılmaz.</string>
+    <string name="supporter_thanks">Bu projeyi desteklediğin için teşekkürler! 🌿</string>
+    <string name="store_unavailable">Mağaza bu kurulumda henüz kullanılamıyor.</string>
+    <string name="store_failed">Bu bahşiş tamamlanamadı.</string>
+
+    <string name="grounding_banner">Derin bir nefes al. Hedef anıya veya duyuma nazikçe odaklan, sonra başlamak için dokun.</string>
+    <string name="phase_ready">Hazır</string>
+    <string name="phase_paused">Duraklatıldı</string>
+    <string name="phase_complete">Set bitti</string>
+    <string name="phase_breathe_rest">Nefes al ve dinlen</string>
+    <string name="phase_rest_complete">Dinlenme bitti</string>
+    <string name="soft_pulse">Yumuşak nabız</string>
+    <string name="let_set_settle">Setin yerleşmesine izin ver</string>
+    <string name="set_number">Set %1$d</string>
+    <string name="passes_progress">%1$d / %2$d</string>
+    <string name="audio_only">Ses</string>
+    <string name="listen">Dinle</string>
+    <string name="between_sets_copy">Hazır olduğunda sonraki sete başla veya burada dinlen.</string>
+    <string name="next_set">Sonraki set</string>
+    <string name="done">Bitti</string>
+    <string name="session_complete_copy">Gözler dinlenebilir. Hazır olunca dön.</string>
+    <string name="preferences">Tercihler</string>
+    <string name="close_preferences">Tercihleri kapat</string>
+    <string name="return_to_ready">Hazıra dön</string>
+    <string name="begin_set">Seti başlat</string>
+    <string name="resume">Sürdür</string>
+    <string name="pause">Duraklat</string>
+    <string name="slower">Yavaşlat</string>
+    <string name="faster">Hızlandır</string>
+    <string name="breathe_prompt">Nefes al... Nefes ver...</string>
+    <string name="breathe_in">Nefes al...</string>
+    <string name="breathe_out">Nefes ver...</string>
+
+    <string name="milestone_5_title">Sessiz bir teşekkür</string>
+    <string name="milestone_5_copy">Uygulamayı birkaç kez açtın. Bir oturum işine yaradıysa, küçük bir bahşiş onu çevrimdışı tutar.</string>
+    <string name="milestone_20_title">Hâlâ buradayız</string>
+    <string name="milestone_20_copy">Yirmi ziyaret. Bunu düzenli, özel bir pratik yaptığın için teşekkürler.</string>
+    <string name="milestone_50_title">Uzun bir bakım yolu</string>
+    <string name="milestone_50_copy">Elli açılış. Desteğin bunun sade ve cihazda kalmasına yardım eder.</string>
+    <string name="not_now">Şimdi değil</string>
+</resources>
