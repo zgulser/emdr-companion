@@ -53,6 +53,21 @@ object AudioSynthesis {
         return pcm
     }
 
+    /**
+     * Interleaved stereo PCM with energy only on the panned side.
+     * `pan = -1` is left-only; `pan = +1` is right-only. Center duplicates.
+     */
+    fun monoToHardPannedPcm16(mono: FloatArray, pan: Float): ByteArray {
+        val (gainL, gainR) = equalPowerGains(pan)
+        val pcm = ByteArray(mono.size * 4)
+        var o = 0
+        for (sample in mono) {
+            writeSample(pcm, o, sample * gainL); o += 2
+            writeSample(pcm, o, sample * gainR); o += 2
+        }
+        return pcm
+    }
+
     private fun writeSample(dest: ByteArray, offset: Int, sample: Float) {
         val clamped = sample.coerceIn(-1f, 1f)
         val intSample = (clamped * Short.MAX_VALUE).toInt()

@@ -45,8 +45,9 @@ class ActiveSessionViewModel(
     private val _remainingSeconds = MutableStateFlow(settings.value.duration.seconds ?: 0)
     val remainingSeconds: StateFlow<Int> = _remainingSeconds.asStateFlow()
 
-    private val _elapsedActiveSeconds = MutableStateFlow(0f)
-    val elapsedActiveSeconds: StateFlow<Float> = _elapsedActiveSeconds.asStateFlow()
+    private var elapsedActive = 0f
+    private val _elapsedActiveSeconds = MutableStateFlow(0)
+    val elapsedActiveSeconds: StateFlow<Int> = _elapsedActiveSeconds.asStateFlow()
 
     private val _milestoneSheet = MutableStateFlow<SupportMilestone?>(null)
     val milestoneSheet: StateFlow<SupportMilestone?> = _milestoneSheet.asStateFlow()
@@ -187,7 +188,8 @@ class ActiveSessionViewModel(
     private fun resetMotion() {
         clock.reset()
         _offset.value = BilateralOffset(0f, 0f)
-        _elapsedActiveSeconds.value = 0f
+        elapsedActive = 0f
+        _elapsedActiveSeconds.value = 0
         _remainingSeconds.value = settings.value.duration.seconds ?: 0
     }
 
@@ -211,12 +213,18 @@ class ActiveSessionViewModel(
                 toPhaseInclusive = clock.phaseRadians,
                 pattern = current.pattern,
             )
-            _offset.value = if (inversions.isNotEmpty()) {
-                inversions.last().snappedOffset
-            } else {
-                BilateralMotion.offset(clock.phaseRadians, current.pattern)
+            if (current.mode.usesVisual) {
+                _offset.value = if (inversions.isNotEmpty()) {
+                    inversions.last().snappedOffset
+                } else {
+                    BilateralMotion.offset(clock.phaseRadians, current.pattern)
+                }
             }
-            _elapsedActiveSeconds.value += dt.toFloat()
+            elapsedActive += dt.toFloat()
+            val elapsedSeconds = elapsedActive.toInt()
+            if (_elapsedActiveSeconds.value != elapsedSeconds) {
+                _elapsedActiveSeconds.value = elapsedSeconds
+            }
             inversions.forEach { inversion ->
                 if (current.mode.usesAudio) {
                     audioPlayer.triggerEdge(inversion.edge)
@@ -233,8 +241,11 @@ class ActiveSessionViewModel(
             } else {
                 val limit = current.duration.seconds
                 if (limit != null) {
-                    _remainingSeconds.value = (limit - _elapsedActiveSeconds.value).toInt().coerceAtLeast(0)
-                    if (_elapsedActiveSeconds.value >= limit) {
+                    val remaining = (limit - elapsedActive).toInt().coerceAtLeast(0)
+                    if (_remainingSeconds.value != remaining) {
+                        _remainingSeconds.value = remaining
+                    }
+                    if (elapsedActive >= limit) {
                         markComplete()
                     }
                 }

@@ -3,6 +3,7 @@ package com.zeki.emdr.audio
 import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
+import android.os.Build
 import com.zeki.emdr.model.AudioSound
 import com.zeki.emdr.session.TrajectoryEdge
 import kotlin.concurrent.thread
@@ -71,6 +72,11 @@ private class AndroidBilateralAudioPlayer : BilateralAudioPlayer {
                 .setTransferMode(AudioTrack.MODE_STREAM)
                 .setBufferSizeInBytes(minBuffer)
                 .setPerformanceMode(AudioTrack.PERFORMANCE_MODE_LOW_LATENCY)
+                .apply {
+                    if (Build.VERSION.SDK_INT >= 29) {
+                        setOffloadedPlayback(false)
+                    }
+                }
                 .build()
             track = created
             created.play()

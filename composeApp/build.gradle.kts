@@ -28,8 +28,9 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-            implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.core.ktx)
+            implementation(libs.androidx.media)
             implementation(libs.google.billing.ktx)
         }
         commonMain.dependencies {
@@ -69,8 +70,8 @@ android {
         applicationId = "com.zekinthos.emdrcompanion"
         minSdk = 26
         targetSdk = 36
-        versionCode = 6
-        versionName = "0.1.5"
+        versionCode = 7
+        versionName = "0.1.6"
     }
 
     packaging {

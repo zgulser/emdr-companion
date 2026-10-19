@@ -166,3 +166,6 @@ data class SessionSettings(
         fun clampBpm(value: Int): Int = value.coerceIn(MIN_BPM, MAX_BPM)
     }
 }
+
+fun isSettingsHighlightLaunch(appLaunchCount: Int): Boolean =
+    appLaunchCount == 1 || appLaunchCount == 50 || appLaunchCount == 100 || appLaunchCount == 250

@@ -1,5 +1,7 @@
 package com.zeki.emdr.ui.session
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -23,15 +25,13 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +40,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -53,6 +54,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -63,6 +65,8 @@ import androidx.compose.ui.unit.dp
 import com.zeki.emdr.data.SessionSettingsRepository
 import com.zeki.emdr.model.SessionSettings
 import com.zeki.emdr.model.SessionType
+import com.zeki.emdr.model.isSettingsHighlightLaunch
+import com.zeki.emdr.theme.EmdrPrimary
 import com.zeki.emdr.session.BilateralOffset
 import com.zeki.emdr.session.SessionPhase
 import com.zeki.emdr.session.SessionRuntime
@@ -79,12 +83,16 @@ import com.zeki.emdr.ui.setup.MainSetupViewModel
 import com.zeki.emdr.ui.setup.MilestoneSupportSheet
 import com.zeki.emdr.ui.setup.SessionPreferencesForm
 import com.zeki.emdr.ui.setup.SupporterCard
+import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.resources.stringResource
 
 private const val ChromeIdleHideMs = 3_000L
 private const val ChromeTapFadeMs = 1_500
 private const val ChromeButtonFadeMs = 1_500
 private const val GroundingFadeMs = 1_500
+private const val SettingsBeaconPulseMs = 1_000
+private const val SettingsBeaconRepeats = 2
+private val SettingsBeaconRingSize = 96.dp
 
 @Composable
 fun ActiveSessionScreen(
@@ -99,7 +107,6 @@ fun ActiveSessionScreen(
     val settings by viewModel.settings.collectAsState()
     val runtime by viewModel.runtimeState.collectAsState()
     val resetEpoch by viewModel.resetEpoch.collectAsState()
-    val offset by viewModel.offset.collectAsState()
     val remainingSeconds by viewModel.remainingSeconds.collectAsState()
     val elapsedActiveSeconds by viewModel.elapsedActiveSeconds.collectAsState()
     val milestone by viewModel.milestoneSheet.collectAsState()
@@ -114,6 +121,11 @@ fun ActiveSessionScreen(
     var chromeFadeMs by remember { mutableIntStateOf(ChromeTapFadeMs) }
     var interactionEpoch by remember { mutableIntStateOf(0) }
     var showPreferences by remember { mutableStateOf(false) }
+    var settingsBeaconDismissed by remember { mutableStateOf(false) }
+    val showSettingsBeacon =
+        isReady &&
+            !settingsBeaconDismissed &&
+            isSettingsHighlightLaunch(settings.appLaunchCount)
 
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -178,16 +190,6 @@ fun ActiveSessionScreen(
         label = "breathRest",
     )
 
-    val pulse = rememberSoftPulse(active = isReady)
-    val displayOffset = if (isReady) {
-        BilateralOffset(0f, 0f)
-    } else {
-        BilateralOffset(
-            x = offset.x * (1f - settleProgress),
-            y = offset.y * (1f - settleProgress),
-        )
-    }
-
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -196,6 +198,7 @@ fun ActiveSessionScreen(
                 detectTapGestures {
                     if (isComplete || showPreferences || isResting || isBetweenSets) return@detectTapGestures
                     if (isReady) {
+                        settingsBeaconDismissed = true
                         viewModel.beginSet()
                     } else {
                         revealChromeByTap()
@@ -205,11 +208,12 @@ fun ActiveSessionScreen(
             },
     ) {
         if (settings.mode.usesVisual && orbAlpha > 0f) {
-            SessionOrbCanvas(
-                offset = displayOffset,
+            SessionOrbMotionLayer(
+                offset = viewModel.offset,
+                isReady = isReady,
+                settleProgress = settleProgress,
                 color = settings.orbColor.color,
                 diameterDp = settings.orbSize.diameterDp,
-                pulseScale = if (isReady) pulse else 1f,
                 modifier = Modifier
                     .fillMaxSize()
                     .alpha(orbAlpha),
@@ -247,7 +251,10 @@ fun ActiveSessionScreen(
                 .then(
                     if (isReady && !isComplete && !showPreferences) {
                         Modifier.pointerInput(isReady) {
-                            detectTapGestures { viewModel.beginSet() }
+                            detectTapGestures {
+                                settingsBeaconDismissed = true
+                                viewModel.beginSet()
+                            }
                         }
                     } else {
                         Modifier
@@ -295,6 +302,7 @@ fun ActiveSessionScreen(
                     isPaused = isPaused || isReady,
                     bpm = settings.bpm,
                     onTogglePause = {
+                        if (isReady) settingsBeaconDismissed = true
                         viewModel.togglePause()
                         hideChromeByButton()
                     },
@@ -322,9 +330,11 @@ fun ActiveSessionScreen(
 
         PersistentSettingsGear(
             onClick = {
+                settingsBeaconDismissed = true
                 showPreferences = true
                 revealChromeByTap()
             },
+            showBeacon = showSettingsBeacon,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .statusBarsPadding()
@@ -349,8 +359,29 @@ fun ActiveSessionScreen(
 }
 
 @Composable
+private fun SessionOrbMotionLayer(
+    offset: StateFlow<BilateralOffset>,
+    isReady: Boolean,
+    settleProgress: Float,
+    color: Color,
+    diameterDp: Int,
+    modifier: Modifier = Modifier,
+) {
+    val pose = offset.collectAsState()
+    val pulseScale = if (isReady) rememberSoftPulse() else 1f
+    SessionOrbCanvas(
+        offset = pose,
+        isReady = isReady,
+        settleProgress = settleProgress,
+        color = color,
+        diameterDp = diameterDp,
+        pulseScale = pulseScale,
+        modifier = modifier,
+    )
+}
+
+@Composable
 private fun rememberSoftPulse(
-    active: Boolean,
     durationMs: Int = 2_200,
     minScale: Float = 0.92f,
     maxScale: Float = 1.08f,
@@ -365,7 +396,7 @@ private fun rememberSoftPulse(
         ),
         label = "softPulseScale",
     )
-    return if (active) pulse else 1f
+    return pulse
 }
 
 @Composable
@@ -494,10 +525,31 @@ private fun BetweenSetsPanel(
 @Composable
 private fun PersistentSettingsGear(
     onClick: () -> Unit,
+    showBeacon: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val colors = emdrColors()
-    Box(modifier = modifier) {
+    val beaconProgress = rememberSettingsBeaconProgress(active = showBeacon)
+    Box(
+        modifier = modifier.size(EmdrMinTouchTarget),
+        contentAlignment = Alignment.Center,
+    ) {
+        if (beaconProgress != null) {
+            Canvas(
+                modifier = Modifier
+                    .wrapContentSize(unbounded = true, align = Alignment.Center)
+                    .size(SettingsBeaconRingSize),
+            ) {
+                val minRadius = EmdrMinTouchTarget.toPx() * 0.38f
+                val maxRadius = size.minDimension * 0.46f
+                val radius = minRadius + (maxRadius - minRadius) * beaconProgress
+                drawCircle(
+                    color = EmdrPrimary.copy(alpha = 0.4f * (1f - beaconProgress)),
+                    radius = radius,
+                    style = Stroke(width = 2.dp.toPx()),
+                )
+            }
+        }
         Surface(
             onClick = onClick,
             shape = EmdrButtonShape,
@@ -513,6 +565,33 @@ private fun PersistentSettingsGear(
             }
         }
     }
+}
+
+@Composable
+private fun rememberSettingsBeaconProgress(active: Boolean): Float? {
+    val progress = remember { Animatable(0f) }
+    var running by remember { mutableStateOf(false) }
+    LaunchedEffect(active) {
+        if (!active) {
+            running = false
+            progress.snapTo(0f)
+            return@LaunchedEffect
+        }
+        running = true
+        repeat(SettingsBeaconRepeats) {
+            progress.snapTo(0f)
+            progress.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(
+                    durationMillis = SettingsBeaconPulseMs,
+                    easing = FastOutSlowInEasing,
+                ),
+            )
+        }
+        running = false
+        progress.snapTo(0f)
+    }
+    return if (running) progress.value else null
 }
 
 @Composable
@@ -589,6 +668,7 @@ private fun SessionPreferencesSheet(
                         onPattern = setupViewModel::setPattern,
                         onOrbSize = setupViewModel::setOrbSize,
                         onAudioSound = setupViewModel::setAudioSound,
+                        onPreviewSound = setupViewModel::previewSound,
                         onBpm = setupViewModel::setBpm,
                         onDuration = setupViewModel::setDuration,
                         onSessionType = setupViewModel::setSessionType,
@@ -607,33 +687,54 @@ private fun SessionPreferencesSheet(
 
 @Composable
 private fun SessionOrbCanvas(
-    offset: BilateralOffset,
+    offset: State<BilateralOffset>,
+    isReady: Boolean,
+    settleProgress: Float,
     color: Color,
     diameterDp: Int,
     pulseScale: Float,
     modifier: Modifier = Modifier,
 ) {
-    Canvas(modifier = modifier) {
-        val radius = (diameterDp.dp.toPx() / 2f) * pulseScale
-        val inset = radius * 2.4f
-        val travelX = (size.width / 2f) - inset
-        val travelY = (size.height / 2f) - inset
-        // offset.x = -1 draws at field x = 0; offset.x = +1 draws at field x = max.
-        val center = Offset(
-            x = size.width / 2f + (offset.x * travelX),
-            y = size.height / 2f + (offset.y * travelY),
-        )
-        drawCircle(
-            brush = Brush.radialGradient(
-                colors = listOf(color.copy(alpha = 0.55f), color.copy(alpha = 0.12f), Color.Transparent),
-                center = center,
-                radius = radius * 3.1f,
-            ),
-            radius = radius * 3.1f,
-            center = center,
-        )
-        drawCircle(color = color, radius = radius, center = center)
-    }
+    Box(
+        modifier.drawWithCache {
+            val radius = (diameterDp.dp.toPx() / 2f) * pulseScale
+            val glowRadius = radius * 3.1f
+            val inset = radius * 2.4f
+            val glowColors = listOf(
+                color.copy(alpha = 0.55f),
+                color.copy(alpha = 0.12f),
+                Color.Transparent,
+            )
+            onDrawBehind {
+                val pose = offset.value
+                val display = if (isReady) {
+                    BilateralOffset(0f, 0f)
+                } else {
+                    BilateralOffset(
+                        x = pose.x * (1f - settleProgress),
+                        y = pose.y * (1f - settleProgress),
+                    )
+                }
+                val travelX = (size.width / 2f) - inset
+                val travelY = (size.height / 2f) - inset
+                // offset.x = -1 draws at field x = 0; offset.x = +1 draws at field x = max.
+                val center = Offset(
+                    x = size.width / 2f + (display.x * travelX),
+                    y = size.height / 2f + (display.y * travelY),
+                )
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        colors = glowColors,
+                        center = center,
+                        radius = glowRadius,
+                    ),
+                    radius = glowRadius,
+                    center = center,
+                )
+                drawCircle(color = color, radius = radius, center = center)
+            }
+        },
+    )
 }
 
 @Composable
@@ -734,31 +835,6 @@ private fun SessionControls(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    SessionIconButton(
-                        onClick = { onBpmChange(bpm - 1) },
-                        enabled = interactive && bpm > SessionSettings.MIN_BPM,
-                    ) {
-                        Icon(Icons.Rounded.Remove, contentDescription = stringResource(Res.string.slower), tint = colors.text)
-                    }
-                    Spacer(Modifier.width(12.dp))
-                    Text(
-                        text = stringResource(Res.string.bpm_value, bpm),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = colors.text,
-                    )
-                    Spacer(Modifier.width(12.dp))
-                    SessionIconButton(
-                        onClick = { onBpmChange(bpm + 1) },
-                        enabled = interactive && bpm < SessionSettings.MAX_BPM,
-                    ) {
-                        Icon(Icons.Rounded.Add, contentDescription = stringResource(Res.string.faster), tint = colors.text)
-                    }
-                }
                 BpmSlider(
                     bpm = bpm,
                     onBpmChange = onBpmChange,
@@ -819,11 +895,11 @@ private fun SessionIconButton(
 private fun remainingLabel(
     settings: SessionSettings,
     remainingSeconds: Int,
-    elapsedActiveSeconds: Float,
+    elapsedActiveSeconds: Int,
 ): String {
     val limit = settings.duration.seconds
     return if (limit == null) {
-        formatClock(elapsedActiveSeconds.toInt())
+        formatClock(elapsedActiveSeconds)
     } else {
         formatClock(remainingSeconds)
     }

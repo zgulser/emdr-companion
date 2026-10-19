@@ -63,14 +63,16 @@ private class IosBilateralAudioPlayer : BilateralAudioPlayer {
     private fun rebuild() {
         leftPlayer?.stop()
         rightPlayer?.stop()
-        val wav = AudioSynthesis.wrapWav(
-            AudioSynthesis.monoToStereoPcm16(AudioSamples.oneShot(sound)),
-        )
-        val data = wav.usePinned { pinned ->
+        val sample = AudioSamples.oneShot(sound)
+        leftPlayer = oneShotPlayer(wavData(sample, pan = -1f), pan = -1f)
+        rightPlayer = oneShotPlayer(wavData(sample, pan = 1f), pan = 1f)
+    }
+
+    private fun wavData(sample: FloatArray, pan: Float): NSData {
+        val wav = AudioSynthesis.wrapWav(AudioSynthesis.monoToHardPannedPcm16(sample, pan))
+        return wav.usePinned { pinned ->
             NSData.create(bytes = pinned.addressOf(0), length = wav.size.toULong())
         }
-        leftPlayer = oneShotPlayer(data, pan = -1f)
-        rightPlayer = oneShotPlayer(data, pan = 1f)
     }
 
     private fun oneShotPlayer(data: NSData, pan: Float): AVAudioPlayer {

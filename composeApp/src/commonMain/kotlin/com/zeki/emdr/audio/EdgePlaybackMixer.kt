@@ -72,6 +72,7 @@ class EdgePlaybackMixer {
             if (edge != null) {
                 activeSample = AudioSamples.oneShot(sound)
                 playhead = 0
+                // TrajectoryEdge.Left = -1, Right = +1 — never mix to center.
                 activePan = edge.pan
             }
         }

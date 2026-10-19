@@ -39,8 +39,10 @@
     <string name="audio_title">Auditive Stimulation</string>
     <string name="audio_caption">Ein diskreter Tick an jeder Umkehr: linker Kanal am linken Rand, rechter am rechten. Sanfte Sinustöne sind Standard.</string>
     <string name="audio_caption_disabled">Wird genutzt, wenn der Modus Audio einschließt.</string>
+    <string name="audio_headphones_hint">🎧 Für beste bilaterale Ergebnisse Kopfhörer tragen oder das Gerät im Querformat-Stereo platzieren.</string>
     <string name="sound_soft_sine_default">Sanfte Sinustöne (Standard)</string>
     <string name="sound_wooden">Holzmetronom</string>
+    <string name="test_sound">Ton prüfen</string>
 
     <string name="haptics_title">Haptische Vibration</string>
     <string name="haptics_caption">Ein leichter Impuls an jeder Wand. Ausschalten, wenn das Gerät still bleiben soll.</string>
@@ -50,7 +52,6 @@
     <string name="tempo_title">Tempo</string>
     <string name="tempo_caption">Schläge pro Minute. Jede Kante ist ein Schlag.</string>
     <string name="bpm_value">%1$d BPM</string>
-    <string name="bpm_range">%1$d–%2$d</string>
 
     <string name="session_type_title">Sitzungstyp</string>
     <string name="session_type_caption">Dauerhaft läuft mit Timer. Sets zählen Links–Rechts-Pässe, dann Pause.</string>

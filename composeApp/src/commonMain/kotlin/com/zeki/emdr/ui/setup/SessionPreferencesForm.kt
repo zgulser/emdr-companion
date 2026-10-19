@@ -5,14 +5,23 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.zeki.emdr.model.AudioSound
 import com.zeki.emdr.model.OrbPalette
 import com.zeki.emdr.model.OrbSize
@@ -25,6 +34,8 @@ import com.zeki.emdr.model.ThemePreference
 import com.zeki.emdr.model.VisualPattern
 import com.zeki.emdr.resources.Res
 import com.zeki.emdr.resources.*
+import com.zeki.emdr.theme.EmdrButtonShape
+import com.zeki.emdr.theme.EmdrMinTouchTarget
 import com.zeki.emdr.theme.emdrColors
 import com.zeki.emdr.theme.emdrTouchTarget
 import com.zeki.emdr.ui.components.BpmSlider
@@ -42,6 +53,7 @@ fun SessionPreferencesForm(
     onPattern: (VisualPattern) -> Unit,
     onOrbSize: (OrbSize) -> Unit,
     onAudioSound: (AudioSound) -> Unit,
+    onPreviewSound: () -> Unit,
     onBpm: (Int) -> Unit,
     onDuration: (SessionDuration) -> Unit,
     onSessionType: (SessionType) -> Unit,
@@ -133,12 +145,34 @@ fun SessionPreferencesForm(
         ),
         enabled = audioEnabled,
     ) {
-        ChoiceChipRow(
-            options = listOf(AudioSound.SoftTone, AudioSound.WOODEN_METRONOME),
-            selected = settings.audioSound,
-            label = { it.localizedLabel() },
-            onSelect = onAudioSound,
-            enabled = audioEnabled,
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            ChoiceChipRow(
+                options = listOf(AudioSound.SoftTone, AudioSound.WOODEN_METRONOME),
+                selected = settings.audioSound,
+                label = { it.localizedLabel() },
+                onSelect = onAudioSound,
+                enabled = audioEnabled,
+                modifier = Modifier.weight(1f),
+            )
+            TestSoundButton(
+                onClick = onPreviewSound,
+                enabled = audioEnabled,
+            )
+        }
+        Spacer(Modifier.height(8.dp))
+        Text(
+            text = stringResource(Res.string.audio_headphones_hint),
+            style = MaterialTheme.typography.labelLarge.copy(
+                fontWeight = FontWeight.Normal,
+                fontSize = 13.sp,
+                lineHeight = 18.sp,
+                letterSpacing = 0.sp,
+            ),
+            color = colors.textHint,
         )
     }
 
@@ -244,6 +278,41 @@ fun SessionPreferencesForm(
                     checkedTrackColor = colors.primary,
                     checkedThumbColor = colors.onPrimary,
                 ),
+            )
+        }
+    }
+}
+
+@Composable
+private fun TestSoundButton(
+    onClick: () -> Unit,
+    enabled: Boolean,
+) {
+    val colors = emdrColors()
+    Surface(
+        onClick = onClick,
+        enabled = enabled,
+        shape = EmdrButtonShape,
+        color = colors.surfaceElevated,
+        modifier = Modifier
+            .emdrTouchTarget()
+            .heightIn(min = EmdrMinTouchTarget),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.PlayArrow,
+                contentDescription = null,
+                tint = if (enabled) colors.text else colors.textSecondary,
+                modifier = Modifier.size(20.dp),
+            )
+            Text(
+                text = stringResource(Res.string.test_sound),
+                style = MaterialTheme.typography.labelLarge,
+                color = if (enabled) colors.text else colors.textSecondary,
             )
         }
     }

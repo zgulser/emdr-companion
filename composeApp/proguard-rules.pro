@@ -1,26 +1,13 @@
-# R8 / Compose Multiplatform
--keepattributes *Annotation*, InnerClasses, EnclosingMethod, Signature
--keep class androidx.compose.** { *; }
--dontwarn androidx.compose.**
+# R8 full mode + proguard-android-optimize.txt already handle Android
+# framework, Kotlin, coroutines, Billing, and MediaSession consumer rules.
+# Do not keep androidx.compose.** — that blocks shrinking, obfuscation, and
+# inlining of unused Material 3 / icon code and tanks Play DEX scores.
 
-# Compose Multiplatform resources (WAV ticks, generated accessors)
--keep class com.zeki.emdr.resources.** { *; }
--keep class org.jetbrains.compose.resources.** { *; }
-
-# Entry points the manifest and notification intents resolve by name
+# Manifest components (also emitted by AAPT). Class names stay; members may
+# still be optimized.
 -keep class com.zeki.emdr.MainActivity { <init>(); }
 -keep class com.zeki.emdr.session.EmdrSessionService { <init>(); }
 
-# ViewModels constructed from Compose factories
--keep class * extends androidx.lifecycle.ViewModel { <init>(...); }
-
-# Play Billing callbacks
--keep class com.android.billingclient.** { *; }
--dontwarn com.android.billingclient.**
-
-# Kotlin
--dontwarn kotlinx.coroutines.**
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
+# Compose Multiplatform resource loading (generated accessors, WAV bytes).
+-keep class org.jetbrains.compose.resources.** { *; }
+-dontwarn org.jetbrains.compose.resources.**

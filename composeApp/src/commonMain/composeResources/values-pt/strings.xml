@@ -39,8 +39,10 @@
     <string name="audio_title">Estimulação auditiva</string>
     <string name="audio_caption">Um tic discreto soa em cada inversão: canal esquerdo na borda esquerda, direito na direita. Tons senoidais suaves é o padrão.</string>
     <string name="audio_caption_disabled">Usado quando o modo inclui áudio.</string>
+    <string name="audio_headphones_hint">🎧 Para melhores resultados bilaterais, use fones de ouvido ou coloque o aparelho em estéreo na horizontal.</string>
     <string name="sound_soft_sine_default">Tons senoidais suaves (padrão)</string>
     <string name="sound_wooden">Metrônomo de madeira</string>
+    <string name="test_sound">Testar som</string>
 
     <string name="haptics_title">Vibração háptica</string>
     <string name="haptics_caption">Um pulso leve em cada parede. Desligue se preferir o aparelho quieto.</string>
@@ -50,7 +52,6 @@
     <string name="tempo_title">Andamento</string>
     <string name="tempo_caption">Batidas por minuto. Cada chegada à borda é uma batida.</string>
     <string name="bpm_value">%1$d BPM</string>
-    <string name="bpm_range">%1$d–%2$d</string>
 
     <string name="session_type_title">Tipo de sessão</string>
     <string name="session_type_caption">Contínuo usa um temporizador. Sets contam passagens esquerda–direita e depois descansam.</string>

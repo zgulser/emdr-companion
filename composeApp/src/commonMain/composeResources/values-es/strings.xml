@@ -39,8 +39,10 @@
     <string name="audio_title">Estimulación auditiva</string>
     <string name="audio_caption">Un tic discreto suena en cada inversión: canal izquierdo en el borde izquierdo, derecho en el derecho. Tonos senoidales suaves es el valor predeterminado.</string>
     <string name="audio_caption_disabled">Se usa cuando el modo incluye audio.</string>
+    <string name="audio_headphones_hint">🎧 Para mejores resultados bilaterales, usa auriculares o coloca el dispositivo en estéreo apaisado.</string>
     <string name="sound_soft_sine_default">Tonos senoidales suaves (predet.)</string>
     <string name="sound_wooden">Metrónomo de madera</string>
+    <string name="test_sound">Probar sonido</string>
 
     <string name="haptics_title">Vibración háptica</string>
     <string name="haptics_caption">Un pulso suave en cada pared. Apágalo si prefieres el dispositivo en reposo.</string>
@@ -50,7 +52,6 @@
     <string name="tempo_title">Tempo</string>
     <string name="tempo_caption">Pulsaciones por minuto. Cada llegada al borde es un pulso.</string>
     <string name="bpm_value">%1$d PPM</string>
-    <string name="bpm_range">%1$d–%2$d</string>
 
     <string name="session_type_title">Tipo de sesión</string>
     <string name="session_type_caption">Continuo usa un temporizador. Sets cuentan pases izquierda–derecha y luego descansan.</string>

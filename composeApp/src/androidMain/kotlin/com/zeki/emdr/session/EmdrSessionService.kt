@@ -7,18 +7,24 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.content.pm.ServiceInfo
-import android.media.MediaMetadata
-import android.media.session.MediaSession
-import android.media.session.PlaybackState
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.os.PowerManager
+import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
+import androidx.core.app.NotificationCompat
+import androidx.media.app.NotificationCompat.MediaStyle
 import com.zeki.emdr.MainActivity
+import com.zekinthos.emdrcompanion.R
 
 class EmdrSessionService : Service() {
-    private var mediaSession: MediaSession? = null
+    private var mediaSession: MediaSessionCompat? = null
     private var wakeLock: PowerManager.WakeLock? = null
     private var playing: Boolean = true
+    private val main = Handler(Looper.getMainLooper())
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -71,64 +77,129 @@ class EmdrSessionService : Service() {
 
     private fun startInForeground() {
         ensureChannel()
-        val launch = activityIntent()
-        val builder = Notification.Builder(this, CHANNEL_ID)
-            .setContentTitle("EMDR Companion")
-            .setContentText(if (playing) "Bilateral session is running" else "Session paused")
-            .setSmallIcon(if (playing) android.R.drawable.ic_media_play else android.R.drawable.ic_media_pause)
-            .setContentIntent(launch)
+        val session = ensureSession()
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("EMDR Companion Session")
+            .setContentText(
+                if (playing) {
+                    "Bilateral stimulation in progress..."
+                } else {
+                    "Session paused"
+                },
+            )
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentIntent(activityIntent())
+            .setStyle(
+                MediaStyle()
+                    .setMediaSession(session.sessionToken)
+                    .setShowActionsInCompactView(0, 1)
+                    .setShowCancelButton(true)
+                    .setCancelButtonIntent(serviceIntent(ACTION_STOP, 3)),
+            )
             .setOngoing(true)
             .setOnlyAlertOnce(true)
-            .setCategory(Notification.CATEGORY_SERVICE)
-            .setVisibility(Notification.VISIBILITY_PUBLIC)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            builder.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
-        }
+            .setCategory(NotificationCompat.CATEGORY_TRANSPORT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
         if (playing) {
-            builder.addAction(action(android.R.drawable.ic_media_pause, "Pause", ACTION_PAUSE, 1))
+            builder.addAction(android.R.drawable.ic_media_pause, "Pause", serviceIntent(ACTION_PAUSE, 1))
         } else {
-            builder.addAction(action(android.R.drawable.ic_media_play, "Resume", ACTION_PLAY, 2))
+            builder.addAction(android.R.drawable.ic_media_play, "Resume", serviceIntent(ACTION_PLAY, 2))
         }
-        builder.addAction(action(android.R.drawable.ic_menu_close_clear_cancel, "Stop", ACTION_STOP, 3))
+        builder.addAction(android.R.drawable.ic_menu_close_clear_cancel, "Stop", serviceIntent(ACTION_STOP, 3))
         val notification = builder.build()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
+            startForeground(
+                NOTIFICATION_ID,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK,
+            )
         } else {
             startForeground(NOTIFICATION_ID, notification)
         }
     }
 
-    private fun ensureSession() {
-        if (mediaSession != null) return
-        val session = MediaSession(this, SESSION_TAG).apply {
+    private fun ensureSession(): MediaSessionCompat {
+        mediaSession?.let { return it }
+        val session = MediaSessionCompat(this, SESSION_TAG).apply {
+            setFlags(
+                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or
+                    MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS,
+            )
             setMetadata(
-                MediaMetadata.Builder()
-                    .putString(MediaMetadata.METADATA_KEY_TITLE, "EMDR Companion")
-                    .putString(MediaMetadata.METADATA_KEY_ARTIST, "Bilateral session")
+                MediaMetadataCompat.Builder()
+                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, "EMDR Companion Session")
+                    .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, "Bilateral stimulation")
                     .build(),
             )
-            setCallback(object : MediaSession.Callback() {
-                // Lock-screen and OEM media controllers send onPause() when
-                // the display turns off. Only the notification actions may
-                // pause or stop a clinical set.
-            })
+            setCallback(
+                object : MediaSessionCompat.Callback() {
+                    override fun onPlay() = runOnMain { applyRemotePlay() }
+                    override fun onPause() = runOnMain {
+                        if (screenIsInteractive()) applyRemotePause()
+                    }
+                    override fun onStop() = runOnMain { applyRemoteStop() }
+                    override fun onCustomAction(action: String?, extras: android.os.Bundle?) {
+                        if (action == ACTION_STOP) runOnMain { applyRemoteStop() }
+                    }
+                },
+                main,
+            )
             isActive = true
         }
         mediaSession = session
+        return session
     }
 
     private fun publishPlayback(playing: Boolean) {
-        val state = if (playing) PlaybackState.STATE_PLAYING else PlaybackState.STATE_PAUSED
+        val state = if (playing) {
+            PlaybackStateCompat.STATE_PLAYING
+        } else {
+            PlaybackStateCompat.STATE_PAUSED
+        }
+        val actions = PlaybackStateCompat.ACTION_PLAY or
+            PlaybackStateCompat.ACTION_PAUSE or
+            PlaybackStateCompat.ACTION_PLAY_PAUSE or
+            PlaybackStateCompat.ACTION_STOP
         mediaSession?.setPlaybackState(
-            PlaybackState.Builder()
-                .setActions(PlaybackState.ACTION_PLAY)
-                .setState(state, PlaybackState.PLAYBACK_POSITION_UNKNOWN, if (playing) 1f else 0f)
+            PlaybackStateCompat.Builder()
+                .setActions(actions)
+                .addCustomAction(
+                    PlaybackStateCompat.CustomAction.Builder(
+                        ACTION_STOP,
+                        "Stop",
+                        android.R.drawable.ic_menu_close_clear_cancel,
+                    ).build(),
+                )
+                .setState(state, PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, if (playing) 1f else 0f)
                 .build(),
         )
     }
 
-    private fun action(icon: Int, title: String, action: String, requestCode: Int): Notification.Action =
-        Notification.Action.Builder(icon, title, serviceIntent(action, requestCode)).build()
+    private fun applyRemotePlay() {
+        playing = true
+        SessionRemoteControls.resume?.invoke()
+        publishPlayback(true)
+        startInForeground()
+    }
+
+    private fun applyRemotePause() {
+        playing = false
+        SessionRemoteControls.pause?.invoke()
+        publishPlayback(false)
+        startInForeground()
+    }
+
+    private fun applyRemoteStop() {
+        SessionRemoteControls.stop?.invoke() ?: stopSelf()
+    }
+
+    private fun runOnMain(block: () -> Unit) {
+        if (Looper.myLooper() == Looper.getMainLooper()) block() else main.post(block)
+    }
+
+    private fun screenIsInteractive(): Boolean =
+        getSystemService(PowerManager::class.java)?.isInteractive != false
 
     private fun activityIntent(): PendingIntent =
         PendingIntent.getActivity(
@@ -178,7 +249,7 @@ class EmdrSessionService : Service() {
         const val EXTRA_PLAYING = "playing"
         private const val CHANNEL_ID = "emdr_session_playback"
         private const val NOTIFICATION_ID = 41
-        private const val SESSION_TAG = "emdr-session"
+        private const val SESSION_TAG = "EmdrSession"
         private const val WAKE_TAG = "emdr:session"
     }
 }

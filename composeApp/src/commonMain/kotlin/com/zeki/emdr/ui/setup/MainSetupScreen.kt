@@ -67,6 +67,7 @@ fun MainSetupScreen(
                 onPattern = viewModel::setPattern,
                 onOrbSize = viewModel::setOrbSize,
                 onAudioSound = viewModel::setAudioSound,
+                onPreviewSound = viewModel::previewSound,
                 onBpm = viewModel::setBpm,
                 onDuration = viewModel::setDuration,
                 onSessionType = viewModel::setSessionType,

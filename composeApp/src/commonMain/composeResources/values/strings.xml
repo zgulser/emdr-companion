@@ -39,8 +39,10 @@
     <string name="audio_title">Auditory stimulation</string>
     <string name="audio_caption">A discrete tick fires at each reversal: left channel on the left edge, right channel on the right. Soft Sine Tones is the default.</string>
     <string name="audio_caption_disabled">Used when mode includes audio.</string>
+    <string name="audio_headphones_hint">🎧 For best bilateral results, wear headphones or place device in landscape stereo.</string>
     <string name="sound_soft_sine_default">Soft Sine Tones (Default)</string>
     <string name="sound_wooden">Wooden Metronome</string>
+    <string name="test_sound">Test Sound</string>
 
     <string name="haptics_title">Haptic Vibrations</string>
     <string name="haptics_caption">A light pulse at each wall. Turn off if you prefer a still device.</string>
@@ -50,7 +52,6 @@
     <string name="tempo_title">Tempo</string>
     <string name="tempo_caption">Beats per minute. Each edge arrival is one beat.</string>
     <string name="bpm_value">%1$d BPM</string>
-    <string name="bpm_range">%1$d–%2$d</string>
 
     <string name="session_type_title">Session type</string>
     <string name="session_type_caption">Continuous runs on a timer. Sets count left–right passes, then rest.</string>

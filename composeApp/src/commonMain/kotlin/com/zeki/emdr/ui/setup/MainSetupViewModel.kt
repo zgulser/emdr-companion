@@ -1,6 +1,10 @@
 package com.zeki.emdr.ui.setup
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.zeki.emdr.audio.AudioSamples
+import com.zeki.emdr.audio.createBilateralAudioPlayer
+import com.zeki.emdr.audio.playBilateralSoundPreview
 import com.zeki.emdr.data.SessionSettingsRepository
 import com.zeki.emdr.model.AudioSound
 import com.zeki.emdr.model.OrbPalette
@@ -12,12 +16,21 @@ import com.zeki.emdr.model.SessionType
 import com.zeki.emdr.model.SetLength
 import com.zeki.emdr.model.ThemePreference
 import com.zeki.emdr.model.VisualPattern
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class MainSetupViewModel(
     private val repository: SessionSettingsRepository,
 ) : ViewModel() {
     val settings: StateFlow<SessionSettings> = repository.state
+
+    private val previewPlayer = createBilateralAudioPlayer()
+    private var previewJob: Job? = null
+
+    init {
+        viewModelScope.launch { AudioSamples.ensureLoaded() }
+    }
 
     fun setMode(mode: SessionMode) = repository.setMode(mode)
     fun setOrbColor(color: OrbPalette) = repository.setOrbColor(color)
@@ -32,4 +45,18 @@ class MainSetupViewModel(
     fun setAllowBackgroundPlayback(allowed: Boolean) = repository.setAllowBackgroundPlayback(allowed)
     fun setHapticsEnabled(enabled: Boolean) = repository.setHapticsEnabled(enabled)
     fun markFirstLaunchComplete() = repository.markFirstLaunchComplete()
+
+    fun previewSound() {
+        previewJob?.cancel()
+        previewJob = viewModelScope.launch {
+            AudioSamples.ensureLoaded()
+            playBilateralSoundPreview(previewPlayer, settings.value.audioSound)
+        }
+    }
+
+    override fun onCleared() {
+        previewJob?.cancel()
+        previewPlayer.release()
+        super.onCleared()
+    }
 }

@@ -52,9 +52,33 @@ class AudioSynthesisTest {
 
         mixer.trigger(TrajectoryEdge.Left)
         mixer.render(4, left, right)
+        assertEquals(-1f, TrajectoryEdge.Left.pan)
         assertEquals(1f, left[0], 1e-5f)
         assertEquals(0f, right[0], 1e-5f)
         assertEquals(0f, left[2], 1e-5f)
+
+        mixer.reset()
+        mixer.trigger(TrajectoryEdge.Right)
+        mixer.render(4, left, right)
+        assertEquals(1f, TrajectoryEdge.Right.pan)
+        assertEquals(0f, left[0], 1e-5f)
+        assertEquals(1f, right[0], 1e-5f)
+    }
+
+    @Test
+    fun hardPannedPcmKeepsSilentOppositeChannel() {
+        val left = AudioSynthesis.monoToHardPannedPcm16(floatArrayOf(1f), pan = -1f)
+        // 1f * Short.MAX_VALUE = 0x7FFF little-endian
+        assertEquals(0xFF.toByte(), left[0])
+        assertEquals(0x7F.toByte(), left[1])
+        assertEquals(0, left[2].toInt())
+        assertEquals(0, left[3].toInt())
+
+        val right = AudioSynthesis.monoToHardPannedPcm16(floatArrayOf(1f), pan = 1f)
+        assertEquals(0, right[0].toInt())
+        assertEquals(0, right[1].toInt())
+        assertEquals(0xFF.toByte(), right[2])
+        assertEquals(0x7F.toByte(), right[3])
     }
 
     @Test
