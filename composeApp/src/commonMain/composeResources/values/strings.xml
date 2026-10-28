@@ -42,8 +42,6 @@
     <string name="audio_headphones_hint">🎧 For best bilateral results, wear headphones or place device in landscape stereo.</string>
     <string name="sound_soft_sine_default">Soft Sine Tones (Default)</string>
     <string name="sound_wooden">Wooden Metronome</string>
-    <string name="test_sound">Test Sound</string>
-
     <string name="haptics_title">Haptic Vibrations</string>
     <string name="haptics_caption">A light pulse at each wall. Turn off if you prefer a still device.</string>
     <string name="state_on">ON</string>

@@ -8,14 +8,12 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -24,7 +22,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.zeki.emdr.billing.SupportPurchaseResult
 import com.zeki.emdr.billing.SupportTip
@@ -107,7 +108,6 @@ fun SupporterCard(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SupportTipButtons(
     prices: Map<SupportTip, String>,
@@ -115,9 +115,10 @@ fun SupportTipButtons(
     onSelect: (SupportTip) -> Unit,
 ) {
     val colors = emdrColors()
-    FlowRow(
+    Row(
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         SupportTip.entries.forEach { tip ->
             Surface(
@@ -127,18 +128,29 @@ fun SupportTipButtons(
                 color = colors.surfaceElevated,
                 border = BorderStroke(1.dp, colors.outline),
                 modifier = Modifier
+                    .weight(1f)
                     .emdrTouchTarget()
-                    .widthIn(min = 96.dp)
-                    .heightIn(min = EmdrMinTouchTarget),
+                    .height(EmdrMinTouchTarget),
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp, vertical = 8.dp),
                 ) {
                     Text(
                         text = prices[tip] ?: tip.fallbackPrice,
+                        modifier = Modifier.fillMaxWidth(),
                         style = MaterialTheme.typography.labelLarge,
                         color = if (enabled) colors.text else colors.textSecondary,
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        autoSize = TextAutoSize.StepBased(
+                            minFontSize = 11.sp,
+                            maxFontSize = 13.sp,
+                            stepSize = 1.sp,
+                        ),
                     )
                 }
             }

@@ -42,8 +42,6 @@
     <string name="audio_headphones_hint">🎧 Para melhores resultados bilaterais, use fones de ouvido ou coloque o aparelho em estéreo na horizontal.</string>
     <string name="sound_soft_sine_default">Tons senoidais suaves (padrão)</string>
     <string name="sound_wooden">Metrônomo de madeira</string>
-    <string name="test_sound">Testar som</string>
-
     <string name="haptics_title">Vibração háptica</string>
     <string name="haptics_caption">Um pulso leve em cada parede. Desligue se preferir o aparelho quieto.</string>
     <string name="state_on">LIG.</string>

@@ -42,8 +42,6 @@
     <string name="audio_headphones_hint">🎧 En iyi iki taraflı sonuç için kulaklık takın veya cihazı yatay stereo konumda tutun.</string>
     <string name="sound_soft_sine_default">Yumuşak sinüs tonları (Varsayılan)</string>
     <string name="sound_wooden">Ahşap metronom</string>
-    <string name="test_sound">Sesi dene</string>
-
     <string name="haptics_title">Dokunsal titreşim</string>
     <string name="haptics_caption">Her duvarda hafif bir vuruş. Cihazın durmasını tercih ediyorsan kapat.</string>
     <string name="state_on">AÇIK</string>

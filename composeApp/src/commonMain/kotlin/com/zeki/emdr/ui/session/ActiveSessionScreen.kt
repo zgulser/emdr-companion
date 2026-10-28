@@ -668,7 +668,6 @@ private fun SessionPreferencesSheet(
                         onPattern = setupViewModel::setPattern,
                         onOrbSize = setupViewModel::setOrbSize,
                         onAudioSound = setupViewModel::setAudioSound,
-                        onPreviewSound = setupViewModel::previewSound,
                         onBpm = setupViewModel::setBpm,
                         onDuration = setupViewModel::setDuration,
                         onSessionType = setupViewModel::setSessionType,
